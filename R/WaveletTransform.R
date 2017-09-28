@@ -46,8 +46,9 @@ function(x, dt = 1, dj = 1/20,
     
     # Compute wavelet transform of x 
     # Prepare a complex matrix which accomodates the wavelet transform
-    wave = matrix(0, nrow=scales.length, ncol=N)                 
-    wave = wave + 1i*wave                   
+    gc()
+    wave = matrix(0+0i, nrow=scales.length, ncol=N)
+    gc()
     
     # Computation for each scale...
     # ... simultaneously for all time instances
