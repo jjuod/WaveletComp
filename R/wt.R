@@ -14,7 +14,7 @@ function(x, start = 1, dt = 1, dj = 1/20,
   WT = WaveletTransform(x, dt = dt, dj = dj, 
                         lowerPeriod = lowerPeriod, upperPeriod = upperPeriod)
   
-  out("Saving main run results...")
+  print("Saving main run results...")
   save(list = WT, file = outfile, compress = T)
           
   Power = WT$Power
@@ -69,7 +69,7 @@ function(x, start = 1, dt = 1, dj = 1/20,
       Power.pval = Power.pval / n.sim 
       Power.avg.pval = Power.avg.pval / n.sim  
       
-      out("Saving simulation results...")
+      print("Saving simulation results...")
       save(list = list(Power.pval, Power.avg.pval), file = paste0(outfile, "_pval"), compress = T)
   }  
   
