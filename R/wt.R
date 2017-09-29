@@ -15,7 +15,7 @@ function(x, start = 1, dt = 1, dj = 1/20,
                         lowerPeriod = lowerPeriod, upperPeriod = upperPeriod)
   
   print("Saving main run results...")
-  save(list = WT, file = outfile, compress = T)
+  save(list = c("WT"), file = outfile, compress = T)
           
   Power = WT$Power
   Power.avg = rowMeans(Power)
