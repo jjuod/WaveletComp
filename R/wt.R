@@ -70,7 +70,7 @@ function(x, start = 1, dt = 1, dj = 1/20,
       Power.avg.pval = Power.avg.pval / n.sim  
       
       print("Saving simulation results...")
-      save(c("Power.pval", "Power.avg.pval"), file = paste0(outfile, "_pval"), compress = T)
+      save(list = list("Power.pval", "Power.avg.pval"), file = paste0(outfile, "_pval"), compress = T)
   }  
   
   ###############################################################################
