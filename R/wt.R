@@ -2,7 +2,7 @@ wt <-
 function(x, start = 1, dt = 1, dj = 1/20, 
          lowerPeriod = 2*dt, upperPeriod = floor(length(x)*dt/3),
          make.pval = T, method = "white.noise", params = NULL, 
-         n.sim = 100, save.sim = F) {
+         n.sim = 100, save.sim = F, outfile) {
  
                                  
   ###############################################################################
@@ -13,20 +13,19 @@ function(x, start = 1, dt = 1, dj = 1/20,
   # wavelet transform
   WT = WaveletTransform(x, dt = dt, dj = dj, 
                         lowerPeriod = lowerPeriod, upperPeriod = upperPeriod)
+  
+  out("Saving main run results...")
+  save(list = WT, file = outfile, compress = T)
           
-  Wave  = WT$Wave 
-  Phase = WT$Phase
-  Ampl  = WT$Ampl
-
   Power = WT$Power
   Power.avg = rowMeans(Power)
   
   Period = WT$Period
-  Scale  = WT$Scale
   nr  = WT$nr
   nc  = WT$nc
   
   rm(WT)
+  gc()
 
   ###############################################################################
   ## Compute p values for significance check
@@ -57,6 +56,7 @@ function(x, start = 1, dt = 1, dj = 1/20,
           Power.avg.sim = rowMeans(Power.sim)  
           
           rm(WT.sim)
+          gc()
           
           Power.pval[Power.sim >= Power] = Power.pval[Power.sim >= Power] + 1
           Power.avg.pval[Power.avg.sim >= Power.avg] = Power.avg.pval[Power.avg.sim >= Power.avg] + 1
@@ -68,7 +68,9 @@ function(x, start = 1, dt = 1, dj = 1/20,
       
       Power.pval = Power.pval / n.sim 
       Power.avg.pval = Power.avg.pval / n.sim  
-         
+      
+      out("Saving simulation results...")
+      save(list = list(Power.pval, Power.avg.pval), file = paste0(outfile, "_pval"), compress = T)
   }  
   
   ###############################################################################
@@ -81,10 +83,9 @@ function(x, start = 1, dt = 1, dj = 1/20,
   ## Prepare the output
   ###############################################################################
 
-  output = list(Wave = Wave, Phase = Phase, Ampl = Ampl,
-                Power = Power, Power.avg = Power.avg,
+  output = list(Power = Power, Power.avg = Power.avg,
                 Power.pval = Power.pval, Power.avg.pval = Power.avg.pval, 
-                Period = Period, Scale = Scale,     
+                Period = Period,
                 coi.1 = coi$x, coi.2 = coi$y,
                 nc = nc, nr = nr,    
                 axis.1 = coi$axis.1, axis.2 = coi$axis.2,
