@@ -77,6 +77,7 @@ function(x, dt = 1, dj = 1/20,
 
   # Compute wavelet power
   Power = Mod(Wave)^2 / matrix(rep(scales, series.length), nrow=scales.length)
+  Power.avg = rowMeans(Power)
   
   # Phase  
   Phase = Arg(Wave)
@@ -91,7 +92,7 @@ function(x, dt = 1, dj = 1/20,
   output = list(Wave = Wave, 
                 Phase = Phase, Ampl = Ampl,
                 Period = periods, Scale = scales,
-                Power = Power, 
+                Power = Power, Power.avg = Power.avg,
                 nc = series.length, nr = scales.length)
                  
   return(invisible(output))

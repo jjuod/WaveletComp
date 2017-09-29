@@ -13,12 +13,13 @@ function(x, start = 1, dt = 1, dj = 1/20,
   # wavelet transform
   WT = WaveletTransform(x, dt = dt, dj = dj, 
                         lowerPeriod = lowerPeriod, upperPeriod = upperPeriod)
-  
+
   print("Saving main run results...")
   save(list = c("WT"), file = outfile, compress = T)
-          
+  
+  # keep these for COI and p-value calculations
   Power = WT$Power
-  Power.avg = rowMeans(Power)
+  Power.avg = WT$Power.avg
   
   Period = WT$Period
   nr  = WT$nr
@@ -26,6 +27,27 @@ function(x, start = 1, dt = 1, dj = 1/20,
   
   rm(WT)
   gc()
+  
+  ##################################################################################################
+  ## Compute the power ridge
+  ##################################################################################################
+  
+  Ridge = ridge(Power)
+  gc()
+  
+  ###############################################################################
+  ## Compute the cone of influence COI
+  ###############################################################################
+  
+  coi = COI(start = start, dt = dt, nc = nc, nr = nr, Period = Period)
+  coi = list(Ridge, coi.1=coi$coi.1, coi.2=coi$coi.2,
+  		   axis.1=coi$axis.1, axis.2=coi$axis.2, dt=dt, dj=dj)
+  
+  print("Saving auxiliary info on the main run...")
+  save(list = c("coi"), file = paste0(outfile, "_aux"), compress=T)
+  rm(Period, Ridge, coi)
+  gc()
+  
 
   ###############################################################################
   ## Compute p values for significance check
@@ -60,9 +82,9 @@ function(x, start = 1, dt = 1, dj = 1/20,
           
           Power.pval[Power.sim >= Power] = Power.pval[Power.sim >= Power] + 1
           Power.avg.pval[Power.avg.sim >= Power.avg] = Power.avg.pval[Power.avg.sim >= Power.avg] + 1
-          setTxtProgressBar(pb, ind.sim) # set progress bar
+          setTxtProgressBar(pb, ind.sim)
       }
-      close(pb) # close progress bar
+      close(pb)
 
       # p-values
       
@@ -74,19 +96,13 @@ function(x, start = 1, dt = 1, dj = 1/20,
       save(list = c("Power.avg.pval"), file = paste0(outfile, "_pvalavg"), compress = T)
   }  
   
-  ###############################################################################
-  ## Compute the cone of influence COI
-  ###############################################################################
 
-  coi = COI(start = start, dt = dt, nc = nc, nr = nr, Period = Period)
-  
   ###############################################################################
   ## Prepare the output
   ###############################################################################
 
-  output = list(Power = Power, Power.avg = Power.avg,
+  output = list(Ridge = Ridge, Power = Power, Power.avg = Power.avg,
                 Power.pval = Power.pval, Power.avg.pval = Power.avg.pval, 
-                Period = Period,
                 coi.1 = coi$x, coi.2 = coi$y,
                 nc = nc, nr = nr,    
                 axis.1 = coi$axis.1, axis.2 = coi$axis.2,

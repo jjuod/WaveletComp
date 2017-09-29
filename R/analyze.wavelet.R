@@ -11,7 +11,9 @@ function(my.data, my.series = 1, loess.span = 0.75, dt = 1, dj=1/20,
      out <- function(...) { }
   }
   
-  if(file.exists(outfile) | file.exists(paste0(outfile, "_pval"))) stop('Output file already exists!\n')
+  if(file.exists(outfile) |
+     file.exists(paste0(outfile, "_pval") |
+     file.exists(paste0(outfile, "_pvalavg"))) stop('Output file already exists!\n')
    
 ###################################################################################################
 ## The following function smoothes the series in a data frame.
@@ -79,16 +81,10 @@ function(my.data, my.series = 1, loess.span = 0.75, dt = 1, dj=1/20,
              params = params,
              n.sim = n.sim, save.sim = F, outfile)
               
-##################################################################################################
-## Compute the power ridge
-##################################################################################################
 
-  Ridge = ridge(my.wt$Power)
-  
 ##################################################################################################  
 ## Prepare the output  
 ##################################################################################################
-
 
   output <- list(series = x, loess.span = loess.span, dt = dt, dj = dj,
                  Power = my.wt$Power, Power.avg = my.wt$Power.avg,
