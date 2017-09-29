@@ -89,11 +89,7 @@ function(my.data, my.series = 1, loess.span = 0.75, dt = 1, dj=1/20,
   output <- list(series = x, loess.span = loess.span, dt = dt, dj = dj,
                  Power = my.wt$Power, Power.avg = my.wt$Power.avg,
                  Power.pval = my.wt$Power.pval, Power.avg.pval = my.wt$Power.avg.pval,  
-                 Ridge = Ridge,     
-                 Period = my.wt$Period,             
-                 nc = my.wt$nc, nr = my.wt$nr,      
-                 coi.1 = my.wt$coi.1, coi.2 = my.wt$coi.2,
-                 axis.1 = my.wt$axis.1, axis.2 = my.wt$axis.2               
+                 nc = my.wt$nc, nr = my.wt$nr
                 )
 
   

@@ -101,11 +101,9 @@ function(x, start = 1, dt = 1, dj = 1/20,
   ## Prepare the output
   ###############################################################################
 
-  output = list(Ridge = Ridge, Power = Power, Power.avg = Power.avg,
+  output = list(Power = Power, Power.avg = Power.avg,
                 Power.pval = Power.pval, Power.avg.pval = Power.avg.pval, 
-                coi.1 = coi$x, coi.2 = coi$y,
                 nc = nc, nr = nr,    
-                axis.1 = coi$axis.1, axis.2 = coi$axis.2,
                 series.sim = series.sim)
                 
   return(invisible(output))

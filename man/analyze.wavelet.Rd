@@ -37,7 +37,7 @@ which can be further analyzed in detail.
 analyze.wavelet(my.data, my.series = 1, loess.span = 0.75, dt = 1, dj = 1/20, 
                 lowerPeriod = 2*dt, upperPeriod = floor(nrow(my.data)/3)*dt, 
                 make.pval = T, method = "white.noise", params = NULL,
-                n.sim = 100, verbose = T)
+                n.sim = 100, verbose = T, outfile)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -84,6 +84,7 @@ analyze.wavelet(my.data, my.series = 1, loess.span = 0.75, dt = 1, dj = 1/20,
                 }                         
   \item{n.sim}{number of simulations. Default: 100}
   \item{verbose}{Print verbose output on the screen? Logical. Default: TRUE}
+  \item{outfile}{Filename to store output. Also generates filename_pval, filename_pvalavg, and filename_aux. An error will be thrown if any of these exist.}
 }
 \details{
 Wavelet transformation, as well as p-value computations, are
